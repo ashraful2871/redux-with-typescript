@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <div className="container mx-auto">
+    <div className="max-w-[1320px] mx-auto space-y-5">
       <Navbar></Navbar>
       <Outlet></Outlet>
     </div>
