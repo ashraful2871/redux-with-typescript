@@ -31,7 +31,7 @@ export default function TaskCard({ task }: IProps) {
           <button className="text-red-500 hover:text-red-600">
             <Trash2 size={16} />
           </button>
-          <Checkbox id="terms" />
+          <Checkbox id="terms" className="border-2 border-white" />
         </div>
       </CardContent>
     </Card>

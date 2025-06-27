@@ -21,7 +21,7 @@ const initialState: IInitialState = {
       description: "create home page and routing",
       devDate: "2025-11",
       isCompleted: false,
-      priority: "High",
+      priority: "Low",
     },
   ],
   filter: "all",
