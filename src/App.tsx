@@ -1,10 +1,11 @@
-import { Button } from "./components/ui/button";
+import { Outlet } from "react-router";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <div>
-      <h1>welcome to todo app</h1>
-      <Button>test</Button>
+    <div className="container mx-auto">
+      <Navbar></Navbar>
+      <Outlet></Outlet>
     </div>
   );
 }
