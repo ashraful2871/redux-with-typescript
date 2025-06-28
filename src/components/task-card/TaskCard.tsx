@@ -3,10 +3,13 @@ import { Trash2 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { ITask } from "@/tyoes";
 import { cn } from "@/lib/utils";
+import { useAppDispatch } from "@/redux/hook";
+import { deleteTsak, toggleCompleteState } from "@/redux/features/tasks/task";
 interface IProps {
   task: ITask;
 }
 export default function TaskCard({ task }: IProps) {
+  const dispatch = useAppDispatch();
   return (
     <Card className="bg-black border border-gray-800 text-white px-4 py-3 mb-2">
       <CardContent className="p-0 flex items-start justify-between">
@@ -21,17 +24,27 @@ export default function TaskCard({ task }: IProps) {
             })}
           />
           <div>
-            <h3 className="text-sm font-semibold">{task.title}</h3>
+            <h3 className={cn({ "line-through": task.isCompleted })}>
+              {task.title}
+            </h3>
             <p className="text-sm text-muted-foreground">{task.description}</p>
           </div>
         </div>
 
         {/* Right actions */}
         <div className="flex items-center gap-2">
-          <button className="text-red-500 hover:text-red-600">
+          <button
+            onClick={() => dispatch(deleteTsak(task.id))}
+            className="text-red-500 hover:text-red-600"
+          >
             <Trash2 size={16} />
           </button>
-          <Checkbox id="terms" className="border-2 border-white" />
+          <Checkbox
+            checked={task.isCompleted}
+            onClick={() => dispatch(toggleCompleteState(task.id))}
+            id="terms"
+            className="border-2 border-white"
+          />
         </div>
       </CardContent>
     </Card>
