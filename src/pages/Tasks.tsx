@@ -5,9 +5,9 @@ import { useAppSelector } from "@/redux/hook";
 
 const Tasks = () => {
   const task = useAppSelector(selectTask);
-  const filter = useAppSelector(selectFilter);
+  //  const filter = useAppSelector(selectFilter);
   console.log(task);
-  console.log(filter);
+  // console.log(filter);
   return (
     <div>
       <div className="flex justify-between items-center mb-3">
