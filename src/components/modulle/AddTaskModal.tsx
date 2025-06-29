@@ -24,19 +24,25 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { addTask } from "@/redux/features/tasks/task";
 import type { ITask } from "@/tyoes";
+import { selectUser } from "@/redux/features/user/user";
+import { useState } from "react";
 
 export function AddTaskModal() {
+  const [open, setOpen] = useState(false);
   const form = useForm();
   const dispatch = useAppDispatch();
+  const users = useAppSelector(selectUser);
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
     dispatch(addTask(data as ITask));
+    setOpen(false);
+    form.reset();
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Add Task</Button>
       </DialogTrigger>
@@ -78,7 +84,6 @@ export function AddTaskModal() {
                 </FormItem>
               )}
             />
-
             {/* select Priority */}
             <FormField
               control={form.control}
@@ -104,6 +109,33 @@ export function AddTaskModal() {
                 </FormItem>
               )}
             />
+
+            {/* select Assign TO */}
+            <FormField
+              control={form.control}
+              name="AssignTO"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Assign TO</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl className="w-full">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a user" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {users.map((user) => (
+                        <SelectItem value={user.id}>{user.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+
             {/* select Date */}
             <FormField
               control={form.control}

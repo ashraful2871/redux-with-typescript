@@ -3,13 +3,16 @@ import { Trash2 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { ITask } from "@/tyoes";
 import { cn } from "@/lib/utils";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { deleteTsak, toggleCompleteState } from "@/redux/features/tasks/task";
+import { selectUser } from "@/redux/features/user/user";
 interface IProps {
   task: ITask;
 }
 export default function TaskCard({ task }: IProps) {
   const dispatch = useAppDispatch();
+  const users = useAppSelector(selectUser);
+  const assignUser = users.find((user) => user.id === task.AssignTO);
   return (
     <Card className="bg-black border border-gray-800 text-white px-4 py-3 mb-2">
       <CardContent className="p-0 flex items-start justify-between">
@@ -27,6 +30,7 @@ export default function TaskCard({ task }: IProps) {
             <h3 className={cn({ "line-through": task.isCompleted })}>
               {task.title}
             </h3>
+            <p>{assignUser ? assignUser.name : "no one"}</p>
             <p className="text-sm text-muted-foreground">{task.description}</p>
           </div>
         </div>
