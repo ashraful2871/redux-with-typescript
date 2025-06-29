@@ -1,11 +1,17 @@
 import { AddTaskModal } from "@/components/modulle/AddTaskModal";
 import TaskCard from "@/components/task-card/TaskCard";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useGetTasksQuery } from "@/redux/api/bseApi";
 import { selectTask, updateFilter } from "@/redux/features/tasks/task";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 
 const Tasks = () => {
   const task = useAppSelector(selectTask);
+  const { data, isLoading, isError } = useGetTasksQuery(undefined);
+  console.log({ data, isLoading, isError });
+  if (isLoading) {
+    return <p>Loading....</p>;
+  }
   //  const filter = useAppSelector(selectFilter);
   console.log(task);
   // console.log(filter);
@@ -45,9 +51,10 @@ const Tasks = () => {
         <AddTaskModal></AddTaskModal>
       </div>
       <div>
-        {task.map((task) => (
-          <TaskCard key={task.id} task={task}></TaskCard>
-        ))}
+        {!isLoading &&
+          data.tasks.map((task) => (
+            <TaskCard key={task.id} task={task}></TaskCard>
+          ))}
       </div>
     </div>
   );
