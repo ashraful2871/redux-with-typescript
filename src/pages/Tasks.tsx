@@ -4,10 +4,17 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetTasksQuery } from "@/redux/api/bseApi";
 import { selectTask, updateFilter } from "@/redux/features/tasks/task";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import type { ITask } from "@/tyoes";
 
 const Tasks = () => {
   const task = useAppSelector(selectTask);
-  const { data, isLoading, isError } = useGetTasksQuery(undefined);
+  const { data, isLoading, isError } = useGetTasksQuery(undefined, {
+    // pollingInterval: 30000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+  const dispatch = useAppDispatch();
   console.log({ data, isLoading, isError });
   if (isLoading) {
     return <p>Loading....</p>;
@@ -15,7 +22,6 @@ const Tasks = () => {
   //  const filter = useAppSelector(selectFilter);
   console.log(task);
   // console.log(filter);
-  const dispatch = useAppDispatch();
   return (
     <div>
       <div className="flex justify-end items-center mb-3 gap-5">
@@ -52,7 +58,7 @@ const Tasks = () => {
       </div>
       <div>
         {!isLoading &&
-          data.tasks.map((task) => (
+          data.tasks.map((task: ITask) => (
             <TaskCard key={task.id} task={task}></TaskCard>
           ))}
       </div>

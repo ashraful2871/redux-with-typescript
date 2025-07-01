@@ -29,15 +29,25 @@ import { addTask } from "@/redux/features/tasks/task";
 import type { ITask } from "@/tyoes";
 import { selectUser } from "@/redux/features/user/user";
 import { useState } from "react";
+import { useCreateTaskMutation } from "@/redux/api/bseApi";
 
 export function AddTaskModal() {
   const [open, setOpen] = useState(false);
   const form = useForm();
   const dispatch = useAppDispatch();
   const users = useAppSelector(selectUser);
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const [createTask, { data }] = useCreateTaskMutation();
+  console.log("data", data);
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
     dispatch(addTask(data as ITask));
+
+    const taskData = {
+      ...data,
+      isCompleted: false,
+    };
+    const res = await createTask(taskData).unwrap();
+    console.log("inside form", res);
     setOpen(false);
     form.reset();
   };
